@@ -1,16 +1,12 @@
-export default class Game {
+export default class Hand {
   constructor(players = {}) {
     this.players = players;
     this.playerToAct = this.players !== [] ? this.players[0] : null;
 
-    console.log('initialized game, players are: ', this.players);
+    console.log('initialized hand, players are: ', this.players);
   }
 
-  addPlayer = (player) => {
-    this.players[player.id] = player;
-    console.log('added a player, players are: now ', this.players);
-  }
-
+  // Remove player from being able to take future actions this hand. Use when a player folds OR goes all-in
   removePlayer = (playerID) => {
     console.log('removing player', playerID);
     // TODO: replace the next line with a simple pop once it's a linked list
