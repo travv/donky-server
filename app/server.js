@@ -1,13 +1,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
 import cors from 'cors';
 import path from 'path';
 import socketio from 'socket.io';
 import http from 'http';
 import Game from './models/game';
-import {randomID} from './utils/helpers';
-import * as Notes from './controllers/note_controller';
 
 // add server and io initialization after app
 const app = express();
@@ -28,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 let ids = Object.keys(io.sockets.clients().connected);
 
-let pokerGame = new Game();
+const pokerGame = new Game();
 
 // default index route
 app.get('/', (req, res) => {
@@ -41,7 +38,7 @@ io.on('connection', (socket) => {
   ids = Object.keys(io.sockets.clients().connected);
   socket.emit('users', ids);
 
-  console.log('howd',socket.id);
+  console.log('howd', socket.id);
 
 
   socket.on('connect', () => {
