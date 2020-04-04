@@ -25,9 +25,6 @@
     no-plusplus: [2, { allowForLoopAfterthoughts: true }],
     prefer-template: "off"
   },
-  plugins: [
-    'import'
-  ],
   ecmaFeatures: {
     jsx: true,
     modules: true
