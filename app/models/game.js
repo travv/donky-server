@@ -11,9 +11,5 @@ export default class Game {
     console.log('added a player, players are: now ', this.players);
   }
 
-  removePlayer = (playerID) => {
-    console.log('removing player', playerID);
-    // TODO: replace the next line with a simple pop once it's a linked list
-    this.players = this.players.filter(player => player.id !== playerID);
-  }
+
 }
