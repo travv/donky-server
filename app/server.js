@@ -30,8 +30,7 @@ app.use(bodyParser.json());
 let ids = Object.keys(io.sockets.clients().connected);
 
 // Create actual Game object
-const Game = game.Game;
-const pokerGame = new Game();
+const pokerGame = new game.Game();
 
 // Default index route
 app.get('/', (req, res) => {

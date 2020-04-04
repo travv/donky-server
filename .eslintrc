@@ -22,7 +22,8 @@
     no-param-reassign: 0,
     brace-style: [2, "stroustrup"],
     quote-props: ["error", "consistent"],
-    no-plusplus: [2, { allowForLoopAfterthoughts: true }]
+    no-plusplus: [2, { allowForLoopAfterthoughts: true }],
+    prefer-template: "off"
   },
   plugins: [
     'import'

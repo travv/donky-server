@@ -1,39 +1,11 @@
 /*
  * This file is solely for testing various other functions and classes. This code should NOT ever be called by any other file!
- * If a function from here is actually useful for the main codebase, it should be COPIED TO OR REWRITTEN IN some other file!
+ * NOTE README: If a function from here is actually useful for the main codebase, it should be REWRITTEN AND ADJUSTED IN some other file!!!
  */
 const helpers = require('./utils/helpers.js');
 const handEval = require('./utils/hand_eval.js');
+const deck = require('./models/deck');
 
-/*
- * Generate a single random card. All cards are two-character strings.
- * The first character must be a valid rank (a number 2 through 9 or a letter T, J, Q, K, A).
- * The second character must be a valid suit (s, h, c, or d).
- * @returns a valid two-char card string (e.g. '2s', '8h', 'Jd', 'Ac', etc.)
- */
-function generateSingleCard() {
-  const VALID_RANKS = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'];
-  const VALID_SUITS = ['s', 'h', 'c', 'd'];
-
-  const newCardRank = Math.floor(Math.random() * VALID_RANKS.length);
-  const newCardSuit = Math.floor(Math.random() * VALID_SUITS.length);
-
-  return VALID_RANKS[newCardRank] + VALID_SUITS[newCardSuit];
-}
-
-/*
- * Generate an array of random cards. Can be used to create a pair of hole cards, a board of 5 cards, a full hand of 7 cards, etc.
- * @param numCards is an integer determining how many cards should be generated.
- * @returns cards: an array containing the specified number of cards.
- */
-function generateCards(numCards) {
-  const cards = [];
-
-  for (let i = 0; i < numCards; i++) {
-    cards.push(generateSingleCard());
-  }
-  return cards;
-}
 
 /*
  * Generate an array of random playerIDs.
@@ -57,36 +29,50 @@ function generateIDs(numIDs) {
  *  playerCards: a dictionary relating each playerID to an array of two cards (strings)
  *  boardCards: an array of five cards (strings)
  */
-function givePlayersCards(playerIDs) {
-  const playersCards = {};
+function dealAFullHand(playerIDs, currentDeck) {
+  // Give each player 2 cards
+  const allPlayersCards = {};
   for (let i = 0; i < numPlayers; i++) {
-    playersCards[playerIDs[i]] = generateCards(2); // NOTE: multiple players might get the same hole cards, but that's fine for testing purposes
+    const currentPlayersCards = [];
+    for (let j = 0; j < 2; j++) { // 2 hole cards per player
+      currentPlayersCards[j] = currentDeck.dealCard();
+    }
+    allPlayersCards[playerIDs[i]] = currentPlayersCards;
   }
-  const boardCards = generateCards(5); // // NOTE: board might have some overlapping cards with players, but that's fine for testing purposes
+  // Give the board 5 cards
+  const boardCards = [];
+  for (let i = 0; i < 5; i++) { // 5 board cards total
+    boardCards[i] = currentDeck.dealCard();
+  }
 
-  return [playersCards, boardCards];
+  return [allPlayersCards, boardCards];
 }
 
 
 /* *************************** TESTING BELOW HERE ************************** */
 
-const numPlayers = Math.floor(Math.random() * 9) + 2; // 2 to 10 total players
+const numPlayers = Math.floor(Math.random() * 3) + 4; // for this test, create 4 to 6 total players
 const players = generateIDs(numPlayers);
 
-const handInfo = givePlayersCards(players);
+const Deck = deck.Deck;
+const currentDeck = new Deck();
+
+const handInfo = dealAFullHand(players, currentDeck);
 const playersCards = handInfo[0];
 const boardCards = handInfo[1];
+
+console.log('\n~~~ The players and their cards: ~~~');
+console.log(playersCards);
+console.log('\n >>>>>>>>>> THE BOARD: ' + boardCards + '<<<<<<<<<<');
 
 const handsEvaluated = handEval.rankPlayers(boardCards, playersCards);
 const playersBestToWorst = handsEvaluated[0];
 const playersHandInfo = handsEvaluated[1];
 
-console.log('\nThe players and their cards:');
-console.log(playersCards);
-console.log('\nTHE BOARD: ' + boardCards);
-console.log('\nThe players, ranked from best to worst: ');
+console.log('\n ~~~ The players, ranked from best to worst: ~~~');
 for (let i = 0; i < numPlayers; i++) {
   const playerID = playersBestToWorst[i];
   const playerHand = playersHandInfo[playersBestToWorst[i]];
-  console.log('Player ' + playerID + ' has ' + playersCards[playerID] + '; best 5 are ' + playerHand.cards + ' which is ' + playerHand.type + '\n');
+  console.log('Player ' + playerID.slice(3, 11) + ' has ' + playersCards[playerID] + '; best 5 are ' + playerHand.cards + ' which is ' + playerHand.type);
 }
+console.log('\nPlayer ' + playersBestToWorst[0] + ' wins the hand!\n\n');
