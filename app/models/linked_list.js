@@ -9,7 +9,7 @@ class Node {
   }
 }
 
-export default class LinkedList {
+class LinkedList {
   constructor() {
     this.head = null;
     this.size = 0;
@@ -124,3 +124,8 @@ export default class LinkedList {
     return this.size === 0;
   }
 }
+
+// Export this class
+module.exports = {
+  LinkedList,
+};

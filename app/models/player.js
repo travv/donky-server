@@ -2,8 +2,13 @@
  * A Player object to store all player info
  */
 
-export default class Player {
+class Player {
   constructor(element) {
     this.element = element;
   }
 }
+
+// Export this class
+module.exports = {
+  Player,
+};

@@ -1,4 +1,4 @@
-export default class Game {
+class Game {
   constructor(players = {}) {
     this.players = players;
     this.playerToAct = this.players !== [] ? this.players[0] : null;
@@ -13,3 +13,8 @@ export default class Game {
 
 
 }
+
+// Export this class
+module.exports = {
+  Game,
+};

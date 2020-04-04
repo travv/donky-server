@@ -1,45 +1,50 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import path from 'path';
-import socketio from 'socket.io';
-import http from 'http';
-import Game from './models/game';
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const socketio = require('socket.io');
+const http = require('http');
+const game = require('./models/game');
 
-// add server and io initialization after app
+// TODO: ADD A TOP-LEVEL FILE COMMENT TO THIS FILE
+// TODO: REMOVE ANY UNNECESSARY LINES FROM THIS FILE
+// TODO: Make the bulk of this file be a function that is called at the bottom of this file
+
+
+// Add server and io initialization
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-// enable/disable cross origin resource sharing if necessary
+// Enable/disable cors (cross-origin resource sharing) if necessary
 app.use(cors());
 
-app.set('view engine', 'ejs');
+// Enable static assets from folder static
 app.use(express.static('static'));
-// enables static assets from folder static
-app.set('views', path.join(__dirname, '../app/views'));
-// this just allows us to render ejs from the ../app/views directory
+app.set('view engine', 'ejs');
 
-// enable json message body for posting data to API
+// Enable JSON message body
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// Get IDs of connected clients
 let ids = Object.keys(io.sockets.clients().connected);
 
+// Create actual Game object
+const Game = game.Game;
 const pokerGame = new Game();
 
-// default index route
+// Default index route
 app.get('/', (req, res) => {
   res.send(ids);
 });
 
+// When clients connect, add players as appropriate
 io.on('connection', (socket) => {
-  // on first connection emit notes
   pokerGame.addPlayer({ id: socket.id, name: 'hey' });
   ids = Object.keys(io.sockets.clients().connected);
   socket.emit('users', ids);
 
   console.log('howd', socket.id);
-
 
   socket.on('connect', () => {
     io.emit(ids);

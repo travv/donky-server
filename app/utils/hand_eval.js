@@ -230,7 +230,7 @@ function getEachPlayersBestHand(boardCards, holeCards) {
  *  A player's hole cards are represented as an array of exactly 2 valid two-char card strings, e.g. ['As','Kc']
  * @returns rankingAndDict: an array of two items: an array of playerIDs ranked from best hand to worst, and a dictionary with keys = playerIDs and values = `hand` objects
  */
-export default function rankPlayers(boardCards, playerIDsAndHoleCards) {
+function rankPlayers(boardCards, playerIDsAndHoleCards) {
   const playerIDs = Object.keys(playerIDsAndHoleCards);
   const allHoleCards = Object.values(playerIDsAndHoleCards);
   const bestHandForEachPlayer = getEachPlayersBestHand(boardCards, allHoleCards);
@@ -259,3 +259,6 @@ export default function rankPlayers(boardCards, playerIDsAndHoleCards) {
   const rankingAndDict = [playersRanked, bestHandsByPlayerID];
   return rankingAndDict;
 }
+
+// Export the helpful function(s) from this class
+exports.rankPlayers = rankPlayers;
