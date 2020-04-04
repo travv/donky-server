@@ -1,6 +1,5 @@
 /*
- * A JS implementation of a LinkedList
- * The default assumption will be that any classes used as nodes have .next instance variables
+ * A fairly standard LinkedList class
  */
 
 class Node {
@@ -20,13 +19,13 @@ export default class LinkedList {
 
   // Add new element to end of list
   add = (element) => {
+    // Create new node
     const node = new Node(element);
 
-    // If list is empty, add this element and make it the head
+    // If list is empty, add element at start, otherwise iterate to end and add it there
     if (this.head == null) {
       this.head = node;
     }
-    // If list isn't empty, iterate to end of list and add this element there
     else {
       let current = this.head;
       while (current.next) {
@@ -35,35 +34,93 @@ export default class LinkedList {
       current.next = node;
     }
     this.size += 1;
+
     return true;
   }
 
   // Add new element to list at position index
   insertAt = (element, index) => {
+    // If index out of range, can't do anything
     if (index > 0 && index > this.size) {
       return false;
     }
-    else {
-      const node = new Node(element);
-
-      if (index === 0) {
-        node.next = this.head;
-        this.head = node;
-      }
-      else {
-        let incr = 0;
-        let current = this.head;
-        let previous = null;
-        while (incr < index) {
-          previous = current;
-          current = current.next;
-          incr += 1;
-        }
-        node.next = current;
-        previous.next = node;
-      }
-      this.size += 1;
+    // Create new node
+    const node = new Node(element);
+    // If list is empty add element directly, otherwise iterate to index and insert there
+    if (index === 0) {
+      node.next = this.head;
+      this.head = node;
     }
+    else {
+      let current = this.head;
+      let previous = null;
+      for (let i = 0; i < index; i++) {
+        previous = current;
+        current = current.next;
+      }
+      node.next = current;
+      previous.next = node;
+    }
+    this.size += 1;
     return true;
+  }
+
+  // Remove element from specific index
+  removeFrom = (index) => {
+    // If index out of range, can't do anything
+    if (index > 0 && index > this.size) {
+      return false;
+    }
+    let current = this.head;
+    let previous = current;
+    // Iterate through list and remove element from there
+    if (index === 0) {
+      this.head = current.next;
+    }
+    else {
+      for (let i = 0; i < index; i++) {
+        previous = current;
+        current = current.next;
+      }
+      previous.next = current.next;
+    }
+    this.size -= 1;
+    return current.element;
+  }
+
+  // Remove a specific element
+  removeElement = (element, compareFunction) => {
+    let current = this.head;
+    let previous = null;
+
+    while (current != null) {
+      if (compareFunction(element, current)) {
+        if (previous === null) {
+          this.head = current.next;
+        }
+        else {
+          previous.next = current.next;
+        }
+        this.size -= 1;
+        return current;
+      }
+
+      previous = current;
+      current = current.next;
+      if (current === this.head) {
+        break;
+      }
+    }
+    return false;
+  }
+
+  // Check to see the size of the list
+  sizeOfLife = () => {
+    return this.size;
+  }
+
+  // Check to see if the list is empty
+  isEmpty = () => {
+    return this.size === 0;
   }
 }

@@ -20,7 +20,8 @@
     no-use-before-define: ["error", { "functions": false }],
     max-len: 0,
     no-param-reassign: 0,
-    brace-style: [2, "stroustrup"]
+    brace-style: [2, "stroustrup"],
+    no-plusplus: [2, { allowForLoopAfterthoughts: true }]
   },
   plugins: [
     'import'
