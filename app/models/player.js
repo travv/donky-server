@@ -14,6 +14,7 @@ class Player {
     this.isActive = false;
     this.isBigBlind = false;
     this.isAllIn = false;
+    this.lastAction = null;
   }
   // a bunch of helper functions
   setPlayerName = (name) => {
@@ -90,6 +91,12 @@ class Player {
   }
   getCurrentResult = () => {
     return this.currentStack - this.totalBuyIn;
+  }
+  setLastAction = (action) => {
+    this.lastAction = action;
+  }
+  getLastAction = (action) => {
+    return this.lastAction;
   }
 
 }
