@@ -7,6 +7,9 @@ class Node {
     this.element = element;
     this.next = null;
   }
+  getNext = () => {
+    return this.next;
+  }
 }
 
 class LinkedList {
@@ -115,13 +118,18 @@ class LinkedList {
   }
 
   // Check to see the size of the list
-  sizeOfLife = () => {
+  sizeOfList = () => {
     return this.size;
   }
 
   // Check to see if the list is empty
   isEmpty = () => {
     return this.size === 0;
+  }
+
+  // return head of list(mostly making this cause of function name ;) )
+  getHead = () => {
+    return this.head;
   }
 }
 

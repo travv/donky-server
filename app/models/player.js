@@ -6,6 +6,7 @@ class Player {
   constructor() {
     this.playerName = null;
     this.playerID = null;
+    this.seatNum = null;
     this.totalBuyIn = null;
     this.currentStack = null;
     this.currentStreetBet = null;
@@ -26,6 +27,12 @@ class Player {
   }
   getPlayerID = () => {
     return this.playerID;
+  }
+  setSeatNum = (seat) => {
+    this.seatNum = seat;
+  }
+  getSeatNum = () => {
+    return this.seatNum;
   }
   updateBuyIn = (buyIn) => {
     this.totalBuyIn += buyIn;
@@ -80,6 +87,9 @@ class Player {
     else {
       this.isAllIn = true;
     }
+  }
+  getCurrentResult = () => {
+    return this.currentStack - this.totalBuyIn;
   }
 
 }
